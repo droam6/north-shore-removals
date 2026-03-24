@@ -14,8 +14,8 @@
 - **Hours:** Mon-Sat 7am-6pm
 
 ## Sister Sites
-- **Tiling:** northshoretiling.com.au (linked from `tiling.html` redirect)
-- **Painting:** northshorepainting.com.au (linked from `painting.html` redirect)
+- **Tiling:** northshoretiles.com.au (linked from `tiling.html` redirect)
+- **Painting:** northshorepaints.com.au (linked from `painting.html` redirect)
 - **Removals:** northshoreremovals.com (linked from `northshore-removals.html` redirect)
 
 ## Project Structure
@@ -23,8 +23,8 @@
 ```
 /
 ├── index.html                  # Homepage (cleaning service page)
-├── tiling.html                 # Redirect → northshoretiling.com.au
-├── painting.html               # Redirect → northshorepainting.com.au
+├── tiling.html                 # Redirect → northshoretiles.com.au
+├── painting.html               # Redirect → northshorepaints.com.au
 ├── northshore-removals.html    # Redirect → northshoreremovals.com
 ├── contact.html                # Contact / enquiry page
 ├── sitemap.xml                 # XML sitemap (25 URLs)

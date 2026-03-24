@@ -16,7 +16,7 @@
 | Email: northshorecleans@gmail.com | Done | All contact sections, JSON-LD |
 | Logo: NSCLOGO-HD-FINAL.png | Done | Navbar, footer, hero across all pages |
 | Instagram: @northshorecleans | Done | Nav, mobile menu, footer |
-| Redirect pages | Done | tiling.html → northshoretiling.com.au, painting.html → northshorepainting.com.au, northshore-removals.html → northshoreremovals.com |
+| Redirect pages | Done | tiling.html → northshoretiles.com.au, painting.html → northshorepaints.com.au, northshore-removals.html → northshoreremovals.com |
 | 17 cleaning suburb pages | Done | Renamed from painting-*, content adapted for cleaning services |
 | 2 cleaning blog posts | Done | Deep cleaning frequency guide + end of lease checklist |
 | Landing page | Done | landing/cleaning.html (was landing/painting.html) |

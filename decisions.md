@@ -14,7 +14,7 @@
 - Forked NORTH-SHORE-PAINTING into NORTH-SHORE-CLEANING with fresh git history
 - Created new cleaning homepage (index.html) with 6 cleaning services (house, end of lease, office, carpet, window, spring cleaning), trust bar, FAQ, and gallery placeholders
 - Accent colour changed from warm orange (#E07B39) to teal (#2A9D8F) in CSS variables
-- Domain: northshorepainting.com.au → northshoreremovals.com across all files
+- Domain: northshorepaints.com.au → northshoreremovals.com across all files
 - Branding: "North Shore Painting" → "North Shore Removals"
 - Email: northshorepainting@gmail.com → northshorecleans@gmail.com
 - Logo: NSPAINTLOGO-HD-FINAL.png → NSCLOGO-HD-FINAL.png
@@ -22,7 +22,7 @@
 - 17 suburb pages renamed from painting-* to cleaning-* with cleaning-specific content
 - 2 cleaning blog posts created (replacing painting articles)
 - Landing page renamed from landing/painting.html → landing/cleaning.html
-- Redirect pages: tiling.html → northshoretiling.com.au, painting.html → northshorepainting.com.au, northshore-removals.html → northshoreremovals.com
+- Redirect pages: tiling.html → northshoretiles.com.au, painting.html → northshorepaints.com.au, northshore-removals.html → northshoreremovals.com
 - Nav structure: Cleaning → index.html (homepage), Painting → painting.html (redirect to sister site)
 - Painting images and videos deleted
 
