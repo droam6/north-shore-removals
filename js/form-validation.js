@@ -320,6 +320,7 @@
   }
 
   function showSuccess(form) {
+    form.reset();
     var wrapper = form.closest('.form-wrapper, .landing-form, .sidebar-form, .form-container') || form;
     var parent = wrapper.parentElement || wrapper;
     var successDiv = parent.querySelector('.form-success, #form-success');
