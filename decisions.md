@@ -16,9 +16,9 @@
 - Accent colour changed from warm orange (#E07B39) to teal (#2A9D8F) in CSS variables
 - Domain: northshorepainting.com.au → northshoreremovals.com across all files
 - Branding: "North Shore Painting" → "North Shore Removals"
-- Email: northshorepainting@gmail.com → northshorecleaning@gmail.com
+- Email: northshorepainting@gmail.com → northshorecleans@gmail.com
 - Logo: NSPAINTLOGO-HD-FINAL.png → NSCLOGO-HD-FINAL.png
-- Instagram: @northshorepainting → @northshorecleaning
+- Instagram: @northshorepainting → @northshorecleans
 - 17 suburb pages renamed from painting-* to cleaning-* with cleaning-specific content
 - 2 cleaning blog posts created (replacing painting articles)
 - Landing page renamed from landing/painting.html → landing/cleaning.html

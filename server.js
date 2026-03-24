@@ -97,7 +97,7 @@ app.post('/api/contact', async (req, res) => {
 
     // Service-specific email routing
     const emailRouting = {
-      tiling: 'northshorecleaning@gmail.com',
+      tiling: 'northshorecleans@gmail.com',
       painting: 'northshorepainting8@gmail.com',
       cleaning: 'northshoreremovals1@gmail.com',
       removals: 'northshoreremovals1@gmail.com'

@@ -9,7 +9,7 @@
 - **Service:** Cleaning (primary). Redirect pages link to sister sites for Tiling, Painting, and Removals.
 - **Area:** North Shore Sydney, NSW, Australia
 - **Phone:** 0451 488 266
-- **Email:** northshorecleaning@gmail.com
+- **Email:** northshorecleans@gmail.com
 - **ABN:** 12 345 678 901
 - **Hours:** Mon-Sat 7am-6pm
 

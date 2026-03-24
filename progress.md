@@ -13,9 +13,9 @@
 | Accent colour: teal #2A9D8F | Done | CSS variables updated from orange #E07B39 |
 | Domain: northshoreremovals.com | Done | All canonical, OG, JSON-LD URLs updated |
 | Branding: North Shore Removals | Done | Nav, footer, titles, JSON-LD |
-| Email: northshorecleaning@gmail.com | Done | All contact sections, JSON-LD |
+| Email: northshorecleans@gmail.com | Done | All contact sections, JSON-LD |
 | Logo: NSCLOGO-HD-FINAL.png | Done | Navbar, footer, hero across all pages |
-| Instagram: @northshorecleaning | Done | Nav, mobile menu, footer |
+| Instagram: @northshorecleans | Done | Nav, mobile menu, footer |
 | Redirect pages | Done | tiling.html → northshoretiling.com.au, painting.html → northshorepainting.com.au, northshore-removals.html → northshoreremovals.com |
 | 17 cleaning suburb pages | Done | Renamed from painting-*, content adapted for cleaning services |
 | 2 cleaning blog posts | Done | Deep cleaning frequency guide + end of lease checklist |
