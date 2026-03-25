@@ -63,7 +63,7 @@
 
 | Issue | Severity | Details |
 |-------|----------|---------|
-| ABN is placeholder | Medium | `12 345 678 901` is a dummy — needs real ABN |
+| ABN is placeholder | Medium | `96 695 301 341` is a dummy — needs real ABN |
 | Aggregate ratings in schema | Medium | 4.9 stars / 120 reviews hardcoded — need real data or remove |
 | Suburb page content is adapted from painting | Low | Some phrasing may sound slightly mechanical from sed replacements |
 | Gallery has no real photos | Medium | Placeholder divs in gallery, no actual cleaning project images |

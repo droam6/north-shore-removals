@@ -12,7 +12,7 @@
 |-------|-------------|
 | **Business name** | North Shore Projects |
 | **Trading name** (if different) | Same — North Shore Projects |
-| **ABN / ACN** | 12 345 678 901 — **[PLACEHOLDER — real ABN needed before launch]** |
+| **ABN / ACN** | 96 695 301 341 — **[PLACEHOLDER — real ABN needed before launch]** |
 | **Business structure** | [UNKNOWN] |
 | **Date established** | [UNKNOWN] — site states "5+ Years in Business" in trust bar |
 | **Domain name** | northshoreprojects.com.au |
@@ -550,7 +550,7 @@ N/A — all services are quote-only.
 | Privacy policy page | Not built — linked from 45+ pages |
 | Terms & conditions page | Not built — linked from 45+ pages |
 | Favicon + apple-touch-icon | Not created |
-| Real ABN | Placeholder 12 345 678 901 needs replacing |
+| Real ABN | Placeholder 96 695 301 341 needs replacing |
 | Real review data | Placeholder 4.9 stars / 87 reviews needs real data or removal |
 
 ---
@@ -625,7 +625,7 @@ N/A — all services are quote-only.
 |---|----------|--------|
 | 1 | What services do you offer? | Tiling, painting, and cleaning. Removals via trusted partner North Shore Removals. |
 | 2 | How quickly can you provide a quote? | We respond within 24 hours. Phone quotes same day for straightforward jobs. Larger projects get an on-site visit. |
-| 3 | Are you licensed and insured? | Yes. Fully licensed, ABN registered (12 345 678 901), comprehensive public liability insurance. |
+| 3 | Are you licensed and insured? | Yes. Fully licensed, ABN registered (96 695 301 341), comprehensive public liability insurance. |
 | 4 | What suburbs do you cover? | 17 suburbs: Chatswood, Killara, Gordon, Pymble, Turramurra, Lindfield, Roseville, St Ives, Wahroonga, Lane Cove, Willoughby, Artarmon, Crows Nest, North Sydney, Neutral Bay, Mosman, Cremorne. May also service nearby areas. |
 | 5 | Do you offer free quotes? | Yes. All quotes are free, no obligation. Detailed cost breakdown before any work begins. No hidden fees. |
 
