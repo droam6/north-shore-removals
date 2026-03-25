@@ -690,5 +690,22 @@
         document.querySelectorAll('a[href^="#"]').forEach(function(anchor) { anchor.addEventListener('click', function(e) { var targetId = this.getAttribute('href'); if (targetId === '#') { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; } var target = document.querySelector(targetId); if (target) { e.preventDefault(); window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset - 100, behavior: 'smooth' }); } }); });
     </script>
     <script src="js/form-validation.js" defer></script>
+    <script>
+    document.getElementById('contact-form').addEventListener('submit', function() {
+        try {
+            fetch('https://hook.us2.make.com/epwrk3g6akvrl9p9enn1b751mnty8nn0', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    message: document.getElementById('message').value,
+                    service: 'Removals'
+                })
+            });
+        } catch(e) {}
+    });
+    </script>
 </body>
 </html>
