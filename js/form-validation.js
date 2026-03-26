@@ -285,7 +285,11 @@
       var allInputs = form.querySelectorAll('input, select, textarea');
       for (var k = 0; k < allInputs.length; k++) {
         if (allInputs[k].name && allInputs[k].name !== 'website_url') {
-          formData[allInputs[k].name] = allInputs[k].value;
+          if (allInputs[k].type === 'checkbox') {
+            formData[allInputs[k].name] = allInputs[k].checked ? 'Yes' : 'No';
+          } else {
+            formData[allInputs[k].name] = allInputs[k].value;
+          }
         }
       }
 
