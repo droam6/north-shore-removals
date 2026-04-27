@@ -1,145 +1,118 @@
-# North Shore Removals — Website Documentation
+# North Shore Removals — Project Documentation
 
-## Local Path
-- **Mac:** `~/Desktop/NSP/NSP-Website-Building/NORTH-SHORE-CLEANING`
-
-## Business
+## Project
 - **Name:** North Shore Removals
+- **Type:** Static website (HTML/CSS/JS, no build step)
 - **Domain:** https://northshoreremovals.com
-- **Service:** Cleaning (primary). Redirect pages link to sister sites for Tiling, Painting, and Removals.
+- **Service:** Removals (primary). Sister sites for Tiling, Painting, Cleaning are reached via redirect pages.
 - **Area:** North Shore Sydney, NSW, Australia
 - **Phone:** 0451 488 266
-- **Email:** northshorecleans@gmail.com
+- **Email:** northshoreremovals1@gmail.com
 - **ABN:** 96 695 301 341
-- **Hours:** Mon-Sat 7am-6pm
+- **Hours:** Mon–Sat 7am–6pm
 
-## Sister Sites
-- **Tiling:** northshoretiles.com.au (linked from `tiling.html` redirect)
-- **Painting:** northshorepaints.com.au (linked from `painting.html` redirect)
-- **Removals:** northshoreremovals.com (linked from `northshore-removals.html` redirect)
+## Hosting & Deployment
+- **Host:** Bluehost via cPanel **Git Version Control** (auto-pull on deploy)
+- **Repo:** local git → push to remote → Bluehost cPanel pulls
+- **Deploy flow:**
+  1. Edit locally
+  2. `git add` / `git commit` / `git push origin main`
+  3. Bluehost cPanel → **Git Version Control** → **Manage** → **Pull or Deploy** → **Update from Remote**
+- Always end a working session with `git push origin main` so the cPanel side has the latest commit available to pull.
+
+## Forms
+- **Provider:** Formspree
+- **Endpoint:** `https://formspree.io/f/mojkgkpn` (account: northshoreremovals1@gmail.com)
+- **Coverage:** wired across all 20 enquiry forms (index, contact, landing, 17 suburb pages)
+- **Shared logic:** `js/form-validation.js` (validation, honeypot, anti-bot timestamp, `fetch()` JSON submit, success-state swap)
+- **Sydney timestamp:** every form contains `<input type="hidden" name="submitted_sydney_time" id="sydney_time">`. The shared submit handler populates it with Sydney-formatted local time (`Australia/Sydney`, `en-AU`, suffixed `AEDT`) immediately before the JSON gather, so Formspree submissions and email notifications carry the correct local time.
 
 ## Project Structure
 
 ```
 /
-├── index.html                  # Homepage (cleaning service page)
-├── tiling.html                 # Redirect → northshoretiles.com.au
-├── painting.html               # Redirect → northshorepaints.com.au
-├── northshore-removals.html    # Redirect → northshoreremovals.com
-├── contact.html                # Contact / enquiry page
-├── sitemap.xml                 # XML sitemap (25 URLs)
-├── robots.txt                  # Crawler directives
-├── CLAUDE.md                   # This file
+├── index.html                        # Homepage (removals service page)
+├── tiling.html                       # Redirect → northshoretiles.com.au
+├── painting.html                     # Redirect → northshorepaints.com.au
+├── cleaning.html                     # Redirect → cleaning sister site
+├── northshore-removals.html          # Redirect / canonical
+├── contact.html                      # Contact / enquiry page
+├── sitemap.xml
+├── robots.txt
+├── server.js / server.py             # Local-dev static servers
 │
 ├── css/
-│   ├── styles.css              # Full design system CSS (teal accent #2A9D8F)
-│   └── styles.min.css          # Minified CSS
+│   └── styles.css                    # Full design system (navy + red + cream)
 │
 ├── js/
-│   └── form-validation.js      # Form validation (IIFE, 357 lines)
+│   ├── form-validation.js            # Shared form logic (loaded on all 20 form pages)
+│   └── main.js                       # (legacy; not currently included in HTML)
 │
 ├── images/
-│   └── logos/                  # Brand logos
+│   ├── favicon.png
+│   └── logos/                        # NSRLOGO-HD-FINAL.png
 │
-├── suburbs/                    # 17 cleaning suburb landing pages
-│   ├── cleaning-chatswood.html
-│   ├── cleaning-killara.html
-│   ├── cleaning-gordon.html
-│   ├── cleaning-pymble.html
-│   ├── cleaning-turramurra.html
-│   ├── cleaning-lindfield.html
-│   ├── cleaning-roseville.html
-│   ├── cleaning-st-ives.html
-│   ├── cleaning-wahroonga.html
-│   ├── cleaning-lane-cove.html
-│   ├── cleaning-willoughby.html
-│   ├── cleaning-artarmon.html
-│   ├── cleaning-crows-nest.html
-│   ├── cleaning-north-sydney.html
-│   ├── cleaning-neutral-bay.html
-│   ├── cleaning-mosman.html
-│   └── cleaning-cremorne.html
+├── suburbs/                          # 17 suburb landing pages
+│   └── removals-{suburb-slug}.html
 │
-├── blog/
-│   ├── index.html                              # Blog listing (2 cleaning articles)
-│   ├── how-often-deep-clean-home.html          # Deep cleaning frequency guide
-│   └── end-of-lease-cleaning-checklist.html    # End of lease cleaning checklist
-│
-├── landing/                    # Meta Ads landing page (conversion-optimized)
-│   └── cleaning.html
-│
-└── src/                        # Next.js source (unused scaffold)
-    └── app/
+└── landing/
+    └── removals.html                 # Meta Ads landing page (noindex)
 ```
 
 ## Suburbs Covered (17)
-Chatswood, Killara, Gordon, Pymble, Turramurra, Lindfield, Roseville, St Ives, Wahroonga, Lane Cove, Willoughby, Artarmon, Crows Nest, North Sydney, Neutral Bay, Mosman, Cremorne
+Chatswood, Killara, Gordon, Pymble, Turramurra, Lindfield, Roseville, St Ives, Wahroonga, Lane Cove, Willoughby, Artarmon, Crows Nest, North Sydney, Neutral Bay, Mosman, Cremorne.
 
-## Suburb Page Naming Convention
-`suburbs/cleaning-{suburb-slug}.html`
-- Slugs use lowercase with hyphens: `st-ives`, `north-sydney`, `crows-nest`, `lane-cove`
+**Suburb page naming:** `suburbs/removals-{suburb-slug}.html`. Slugs lowercase with hyphens (`st-ives`, `north-sydney`, `crows-nest`, `lane-cove`).
 
 ## Design System
-- **Primary colour:** #1a1a2e (dark navy)
-- **Accent colour:** #2A9D8F (teal)
-- **Heading font:** DM Serif Display (Google Fonts)
-- **Body font:** DM Sans (Google Fonts)
+- **Primary:** `#1A1A2E` (dark navy)
+- **Accent:** `#E63946` (red — note CSS variable is misnamed `--color-gold`; same throughout the codebase)
+- **Cream:** `#FAFAF8`
+- **Heading font:** DM Serif Display
+- **Body font:** DM Sans
 - **Icons:** Font Awesome 6.5.1 (CDN)
-- **Approach:** Mobile-first responsive CSS
+- **Approach:** mobile-first responsive CSS, no framework
 
-## SEO Implementation
-- Unique `<title>` and `<meta description>` on every page
-- JSON-LD structured data on every page (LocalBusiness + Service schemas)
-- Open Graph and Twitter Card tags on every page
-- Canonical URLs on every page
-- hreflang="en-AU" on every page
-- Sitemap XML with 25 pages
-- robots.txt with sitemap reference
-- Proper heading hierarchy (single H1 per page)
-- aria-labels on interactive elements
+## Pricing (current)
+| Crew | Weekday | Weekend | Minimum |
+|---|---|---|---|
+| 2 Men + Truck | $180/hr | $190/hr | 3 hours |
+| 3 Men + Truck | $240/hr | $250/hr | 3 hours |
+| 4 Men + Truck | $310/hr | $320/hr | 4 hours |
+| Extra Man     | +$60/hr | +$60/hr | — |
 
-## Form Structure
-All enquiry forms POST to `/api/contact` with fields:
-- name, email, phone, service, suburb, message
-- Hidden `source` field (organic / meta-ad)
-- dataLayer push on submission: `{event: 'form_submission', service, source}`
+All prices + GST. Source of truth: index.html `#pricing` section.
 
-## Internal Linking Strategy
-- Homepage → 17 cleaning suburb pages, blog, contact
-- Suburb pages → homepage, 2-3 nearby suburb pages
-- Blog posts → homepage, 1-2 suburb pages
-- Footer → services (redirects for non-cleaning), 6 popular suburb pages
-- Nav dropdown → Cleaning (homepage), Tiling/Painting/Removals (redirect pages)
-
-## To-Do (Not Yet Implemented)
-- [ ] Configure Google Tag Manager container
-- [ ] Install Meta Pixel
-- [ ] Set up form backend (/api/contact endpoint)
-- [ ] Configure Google My Business
-- [ ] Submit sitemap to Google Search Console
-- [ ] Add actual Google Map embed on contact page
-- [ ] Create privacy.html and terms.html pages
-- [ ] Add favicon and apple-touch-icon
-- [ ] Replace placeholder ABN with real ABN
-- [ ] Replace placeholder aggregate ratings with real review data
-- [ ] Minify form-validation.js for production
-
----
+## SEO
+- Unique `<title>` and `<meta description>` per page
+- JSON-LD on every page (LocalBusiness / MovingCompany + Service)
+- Open Graph and Twitter Card tags per page
+- Canonical URLs, `hreflang="en-AU"`
+- `sitemap.xml` + `robots.txt`
+- Single H1 per page, semantic headings
 
 ## File Tracking Protocol
 
-### `progress.md`
-- **Purpose:** Tracks what has been built, what remains, and known issues
-- **When to update:** After completing any feature, fixing a bug, or discovering a new issue
+### Per-session expectations
+1. **Read `progress.md` and `decisions.md` at the start** of any session that involves code changes.
+2. **Log every file edited per session** in `progress.md` (append to the "Session log" section with the date).
+3. **Add to `decisions.md`** for any non-trivial choice (next ID below).
+4. **Never delete decision entries.**
+5. **End every session** by running `git push origin main` so Bluehost's Git Version Control can pull.
 
 ### `decisions.md`
-- **Purpose:** Logs every significant architectural or design decision with rationale
-- **When to update:** When making a non-trivial choice
-- **Next ID:** D23
+- **Next ID:** D31
 
-### Rules for All Sessions
-1. **Read both files at the start** of any session that involves code changes
-2. **Update `progress.md`** whenever you complete a task
-3. **Add to `decisions.md`** whenever you make a non-trivial choice
-4. **Never delete decision entries**
-5. **Keep `progress.md` timestamps current**
+## Shell / PowerShell note
+This repo is worked on from Windows. When chaining commands in PowerShell, **use semicolons or separate lines, not `&&`** — `&&` is unsupported in Windows PowerShell 5.1 and produces a parser error. Use `git add .; git commit -m "..."; git push` (or run each on its own line).
+
+## To-Do (not yet implemented)
+- [ ] Configure Google Tag Manager container (placeholder in `<!-- GOOGLE TAG MANAGER -->`)
+- [ ] Install Meta Pixel on landing page (placeholder in `<!-- META PIXEL CODE HERE -->`)
+- [ ] Submit sitemap to Google Search Console
+- [ ] Add real Google Map embed on contact page
+- [ ] Create `privacy.html` and `terms.html`
+- [ ] Replace placeholder ABN with real ABN if required
+- [ ] Replace placeholder aggregate ratings with real review data
+- [ ] Minify `form-validation.js` for production
+- [ ] Rename misleading `--color-gold` CSS variable to `--color-red`

@@ -8,3 +8,6 @@ package.json
 package-lock.json
 *.MOV
 *.mov
+
+# Local scratch files for Claude Code prompts
+round*-*.txt

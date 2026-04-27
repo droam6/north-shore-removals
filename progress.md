@@ -1,69 +1,72 @@
 # North Shore Removals — Progress Tracker
 
-> Last updated: 2026-03-21 (Site created from NORTH-SHORE-PAINTING fork, adapted for cleaning)
+> Last updated: 2026-04-27
+> This file logs work session-by-session. Older "cleaning pivot" notes were stale and have been removed (the live site has always been the removals service).
 
 ---
 
-## Site Creation — COMPLETE
-
-| Item | Status | Notes |
-|------|--------|-------|
-| Forked from NORTH-SHORE-PAINTING | Done | Clean copy, fresh git init |
-| Cleaning homepage created | Done | New index.html with 6 cleaning services, trust bar, FAQ, gallery placeholders |
-| Accent colour: teal #2A9D8F | Done | CSS variables updated from orange #E07B39 |
-| Domain: northshoreremovals.com | Done | All canonical, OG, JSON-LD URLs updated |
-| Branding: North Shore Removals | Done | Nav, footer, titles, JSON-LD |
-| Email: northshorecleans@gmail.com | Done | All contact sections, JSON-LD |
-| Logo: NSCLOGO-HD-FINAL.png | Done | Navbar, footer, hero across all pages |
-| Instagram: @northshorecleans | Done | Nav, mobile menu, footer |
-| Redirect pages | Done | tiling.html → northshoretiles.com.au, painting.html → northshorepaints.com.au, northshore-removals.html → northshoreremovals.com |
-| 17 cleaning suburb pages | Done | Renamed from painting-*, content adapted for cleaning services |
-| 2 cleaning blog posts | Done | Deep cleaning frequency guide + end of lease checklist |
-| Landing page | Done | landing/cleaning.html (was landing/painting.html) |
-| Sitemap rewritten | Done | 25 cleaning-focused URLs |
-| Nav link structure | Done | Cleaning → index.html (homepage), Painting → painting.html (redirect), Tiling → tiling.html (redirect) |
-| CLAUDE.md rewritten | Done | Cleaning-specific repo docs |
-| .gitignore | Done | Includes *.MOV/*.mov |
+## Site state — current
+- Live at https://northshoreremovals.com via Bluehost Git Version Control.
+- 20 enquiry forms wired to Formspree `mojkgkpn` (index, contact, landing/removals, 17 suburb pages).
+- Shared form logic in `js/form-validation.js` (validation, honeypot, JSON submit).
+- 17 suburb pages under `/suburbs/removals-*.html`.
+- Pricing: 2-man $180/$190 (3hr min), 3-man $240/$250 (3hr min), 4-man $310/$320 (4hr min), extra man +$60/hr. + GST.
 
 ---
 
-## REMAINING WORK
+## Session log
 
-### High Priority (blocks launch)
+### 2026-04-27 — Round 2.5 cleanup
+**Files modified:**
+- `index.html` — `<title>`, `og:title`, `twitter:title` "Sydney Removalists" → "North Shore Removals" (3 lines, brand suffix preserved); prose mention "Every move comes with our on-time guarantee and full insurance coverage." rewritten to "Every move comes with full insurance coverage." (line 209).
+- `js/form-validation.js` — added `getSydneyTimestamp()` helper that derives the AEDT/AEST suffix dynamically from Sydney's actual UTC offset (computed by diffing two `toLocaleString` parses, so it works regardless of the user's browser timezone). Submit handler now calls the helper instead of hardcoding " AEDT".
+- `.gitignore` — added `round*-*.txt` pattern under a "Local scratch files for Claude Code prompts" comment.
+- `round1-audit.txt` — deleted from working tree (was untracked).
+- `round25-cleanup.txt` — retained on disk per Round 2.5 instructions; covered by new ignore rule.
+- `progress.md`, `decisions.md` — this entry / D28–D30 added.
 
-| Item | Blocked By | Notes |
-|------|-----------|-------|
-| Form backend (`/api/contact`) | Hosting decision | Need serverless function or email service |
-| Privacy policy page (`privacy.html`) | Legal content | Currently 404 |
-| Terms & conditions page (`terms.html`) | Legal content | Currently 404 |
-| Favicon + apple-touch-icon | Asset creation | No `<link rel="icon">` on any page |
+**Verification:**
+- `git check-ignore round25-cleanup.txt` confirms `.gitignore:13:round*-*.txt` matches.
+- No "Sydney Removalists" remaining in any HTML page's title/og/twitter (one tail-position occurrence remains in `northshore-removals.html` — see decisions D28 / Known issues).
+- Mental DST test: today is 2026-04-27, Sydney DST ended 2026-04-05, helper returns `AEST`. Sanity-check passes.
 
-### Medium Priority (blocks marketing)
-
-| Item | Blocked By | Notes |
-|------|-----------|-------|
-| Google Tag Manager container | GTM account | Replace placeholder |
-| Meta Pixel installation | Meta Business account | Replace placeholder in landing page |
-| Google My Business setup | GMB account | Needed for local SEO |
-| Google Search Console | DNS verification | Submit sitemap.xml |
-| Google Maps embed on contact page | Maps API key | Currently placeholder |
-
-### Low Priority
-
-| Item | Notes |
-|------|-------|
-| CSS minification | styles.min.css needs re-minifying with teal variables |
-| JS minification | form-validation.js is unminified |
-| 404 page | No custom 404.html |
-| Accessibility audit | Needs WAVE/axe testing |
+**Not committed yet** — awaiting local preview.
 
 ---
 
-## KNOWN ISSUES
+### 2026-04-27 — Round 2 content edits
+**Files modified:**
+- `index.html` — meta description ($170 → $180); hero label ("Sydney Removalists" → "North Shore Removals"); removed "On-time guarantee" bullet from What's Included; pricing subtitle (dropped universal "Minimum 3 hours" claim); pricing table (2-man rate $170/$180 → $180/$190; per-row minimum sub-lines added: 3hr for 2-/3-man, **4hr for 4-man — changed from 3hr**); pricing footer note (dropped "Minimum 3 hours"); FAQ price ($170 → $180); added `submitted_sydney_time` hidden input to enquiry form.
+- `contact.html` — FAQ price ($170 → $180, dropped "Minimum 3 hours"); added `submitted_sydney_time` hidden input.
+- `landing/removals.html` — added `submitted_sydney_time` hidden input.
+- `suburbs/removals-*.html` (×17) — FAQ price ($170 → $180); added `submitted_sydney_time` hidden input.
+- `js/form-validation.js` — populator added inside the existing submit handler that sets `#sydney_time` to Sydney-formatted local time + " AEDT" before the JSON gather.
+- `CLAUDE.md`, `progress.md`, `decisions.md` — rewritten to reflect actual site state (the previous "cleaning pivot" wording was wrong).
 
-| Issue | Severity | Details |
-|-------|----------|---------|
-| ABN is placeholder | Medium | `96 695 301 341` is a dummy — needs real ABN |
-| Aggregate ratings in schema | Medium | 4.9 stars / 120 reviews hardcoded — need real data or remove |
-| Suburb page content is adapted from painting | Low | Some phrasing may sound slightly mechanical from sed replacements |
-| Gallery has no real photos | Medium | Placeholder divs in gallery, no actual cleaning project images |
+**Decisions logged:** D23, D24, D25, D26, D27 (see `decisions.md`).
+
+**Not committed yet** — awaiting local preview.
+
+---
+
+## Known issues / housekeeping
+| Issue | Severity | Notes |
+|-------|----------|-------|
+| ABN `96 695 301 341` may be placeholder | Medium | Confirm with operator before launch material |
+| Aggregate rating "5.0 / 183 reviews" hardcoded in JSON-LD | Medium | Replace with real data or remove `aggregateRating` |
+| `--color-gold` CSS variable holds a red value (`#E63946`) | Low | Misleading name; rename to `--color-red` in a separate pass |
+| `js/main.js` is unreferenced legacy code | Low | Targets selectors (`#header`, `.mobile-toggle`) that don't exist in current markup; safe to delete |
+| `form-validation.js` always shows the success state on fetch failure | Low | Intentional fallback per existing code; flag if Formspree errors need surfacing |
+| `northshore-removals.html` `<title>` ends "...| Sydney Removalists" | Low | SEO tail on a redirect page; left untouched in Round 2.5 because replacing yields "North Shore Removals \| North Shore Removals" |
+
+## High-priority pending
+- Configure GTM container
+- Install Meta Pixel on landing page
+- Submit sitemap to Google Search Console
+- Real Google Map embed on contact page
+- Create `privacy.html` and `terms.html`
+
+## Medium-priority
+- Minify `form-validation.js` for production
+- Custom 404 page
+- Accessibility audit (WAVE / axe)

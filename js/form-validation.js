@@ -47,6 +47,30 @@
     return str.replace(/\b[a-z]/g, function (c) { return c.toUpperCase(); });
   }
 
+  // Returns "DD MMM YYYY, hh:mm am/pm AEDT" (or AEST) for Sydney local time.
+  // The abbreviation is derived from Sydney's actual UTC offset rather than the
+  // browser's local offset, so it stays correct for users in any timezone.
+  function getSydneyTimestamp() {
+    var now = new Date();
+    var formatted = now.toLocaleString('en-AU', {
+      timeZone: 'Australia/Sydney',
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+    // Diff Sydney-rendered vs UTC-rendered parses of the same instant. Both are
+    // TZ-naive strings, so the browser's local offset cancels and the result is
+    // Sydney's offset from UTC in minutes east. 660 = AEDT (+11h DST), 600 = AEST (+10h).
+    var sydneyMs = new Date(now.toLocaleString('en-US', { timeZone: 'Australia/Sydney' })).getTime();
+    var utcMs = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' })).getTime();
+    var sydneyOffsetMin = Math.round((sydneyMs - utcMs) / 60000);
+    var abbr = sydneyOffsetMin === 660 ? 'AEDT' : 'AEST';
+    return formatted + ' ' + abbr;
+  }
+
   function stripNonDigits(str) {
     return str.replace(/[^\d+]/g, '');
   }
@@ -278,6 +302,12 @@
         var originalText = btn.textContent || btn.value;
         if (btn.tagName === 'BUTTON') btn.textContent = 'Sending...';
         else btn.value = 'Sending...';
+      }
+
+      // Populate Sydney-formatted timestamp on hidden field (server time is UTC; this gives Sydney local in submissions)
+      var sydneyHidden = form.querySelector('#sydney_time');
+      if (sydneyHidden) {
+        sydneyHidden.value = getSydneyTimestamp();
       }
 
       // Gather form data
