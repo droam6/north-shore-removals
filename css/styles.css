@@ -3093,3 +3093,243 @@ img.navbar-logo-icon {
   .hero, .hero-slideshow { min-height: auto; padding: 2rem 0; }
   body { color: #000; background: #fff; }
 }
+
+/* ---------- ROUND 3: MEGA MENU (Service Areas) ---------- */
+.dropdown-mega { position: static; }
+@media (min-width: 1024px) {
+  .dropdown-mega { position: relative; }
+}
+.dropdown-mega-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: auto;
+  display: none;
+  background: var(--color-cream);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+  padding: 1.5rem 1.75rem;
+  z-index: 1000;
+  min-width: 760px;
+  max-width: calc(100vw - 2rem);
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 1.75rem;
+  border-top: 3px solid var(--color-gold);
+}
+.dropdown-mega:hover .dropdown-mega-menu,
+.dropdown-mega:focus-within .dropdown-mega-menu {
+  display: grid;
+}
+.dropdown-mega-column { display: flex; flex-direction: column; gap: 0.3rem; }
+.dropdown-mega-heading {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: var(--color-gold) !important;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(26,26,46,0.12);
+  margin-bottom: 0.4rem;
+  text-decoration: none;
+  transition: color var(--duration) var(--ease);
+}
+.dropdown-mega-heading:hover { color: var(--color-gold-dark) !important; }
+.dropdown-mega-column > a:not(.dropdown-mega-heading) {
+  font-size: 0.92rem;
+  color: var(--color-navy);
+  text-decoration: none;
+  padding: 0.25rem 0;
+  transition: color var(--duration) var(--ease);
+}
+.dropdown-mega-column > a:not(.dropdown-mega-heading):hover { color: var(--color-gold); }
+
+/* ---------- ROUND 3: MOBILE MENU ACCORDION ---------- */
+.mobile-menu-accordion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 0;
+  background: none;
+  border: none;
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+}
+.mobile-menu-accordion svg {
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+  transition: transform var(--duration) var(--ease);
+}
+.mobile-menu-accordion[aria-expanded="true"] svg { transform: rotate(180deg); }
+.mobile-menu-accordion-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--duration-slow) var(--ease);
+  padding-left: 0.75rem;
+}
+.mobile-menu-accordion-panel.open { max-height: 2000px; }
+.mobile-menu-accordion-nested {
+  font-size: 0.95rem;
+  color: rgba(250,250,248,0.85);
+  font-weight: 600;
+}
+.mobile-menu-accordion-panel-nested { padding-left: 0.75rem; }
+.mobile-menu-link-council {
+  font-weight: 600;
+  color: var(--color-gold) !important;
+}
+
+/* ---------- ROUND 3.5: DROPDOWN COLOURS — dark navy for both Move Types & Service Areas ---------- */
+/* Move Types dropdown: already navy, add accent border-top + drop shadow for consistency with mega-menu */
+.dropdown-menu {
+  border-top: 3px solid var(--color-gold);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  padding: 0.5rem 0;
+}
+.dropdown-menu li a {
+  padding: 0.75rem 1.25rem;
+  font-size: 0.92rem;
+  color: rgba(250,250,248,0.85);
+}
+.dropdown-menu li a:hover {
+  color: var(--color-gold);
+  background: rgba(255,255,255,0.04);
+}
+
+/* Service Areas mega-menu: switch from cream → dark navy, update text contrast */
+.dropdown-mega-menu {
+  background: var(--color-navy);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  padding: 1.75rem 2rem;
+  /* keeps the existing border-top: 3px solid var(--color-gold) accent */
+}
+.dropdown-mega-column { gap: 0.5rem; }
+.dropdown-mega-heading {
+  color: var(--color-gold) !important;
+  border-bottom: 1px solid rgba(250,250,248,0.12);
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.55rem;
+  font-size: 1.08rem;
+}
+.dropdown-mega-heading:hover { color: var(--color-gold-light) !important; }
+.dropdown-mega-column > a:not(.dropdown-mega-heading) {
+  color: rgba(250,250,248,0.78);
+}
+.dropdown-mega-column > a:not(.dropdown-mega-heading):hover {
+  color: var(--color-gold);
+}
+
+/* ---------- ROUND 3.5: MOBILE MENU FONT + PHONE WEIGHT ---------- */
+/* Force DM Sans inheritance across every mobile-menu descendant — overrides
+   the user-agent stylesheet on <button> elements that wouldn't otherwise inherit. */
+.mobile-menu,
+.mobile-menu * {
+  font-family: var(--font-body);
+}
+/* Phone link: was 600 (visually heavy), now matches the surrounding link weight */
+.mobile-menu-phone { font-weight: 400; }
+
+/* ---------- ROUND 3.5: ALTERNATING SECTION BACKGROUNDS (move-types + councils only) ---------- */
+.section-white { background: #ffffff; }
+.section-warm  { background: #F8F6F1; }
+
+/* ---------- ROUND 3.6: REVIEWS CAROUSEL ---------- */
+.reviews-section { padding: var(--section-pad); }
+@media (min-width: 768px) { .reviews-section { padding: var(--section-pad-lg); } }
+
+.reviews-scroll-container {
+  margin-top: 2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.reviews-scroll-container::-webkit-scrollbar { display: none; }
+
+.reviews-scroll {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0.25rem 0 1rem 0;
+}
+
+.review-card {
+  flex: 0 0 320px;
+  min-width: 320px;
+  scroll-snap-align: start;
+  background: var(--color-navy);
+  color: var(--color-cream);
+  padding: 1.75rem 1.5rem;
+  border-top: 3px solid var(--color-gold);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+@media (min-width: 768px) {
+  .review-card { flex: 0 0 360px; min-width: 360px; }
+}
+
+.review-stars {
+  color: var(--color-gold);
+  display: flex;
+  gap: 3px;
+  font-size: 0.95rem;
+}
+.review-text {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: rgba(250,250,248,0.88);
+  flex-grow: 1;
+  margin: 0;
+}
+.review-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(250,250,248,0.12);
+}
+.review-name { color: var(--color-cream); font-weight: 600; }
+.review-time { color: rgba(250,250,248,0.5); }
+.review-source { margin-left: auto; color: rgba(250,250,248,0.45); font-size: 0.78rem; }
+
+.reviews-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+.reviews-arrow {
+  width: 44px;
+  height: 44px;
+  background: var(--color-navy);
+  color: var(--color-cream);
+  border: 1px solid rgba(26,26,46,0.15);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--duration) var(--ease);
+}
+.reviews-arrow:hover { background: var(--color-gold); color: var(--color-navy); }
+.reviews-arrow:disabled { opacity: 0.3; cursor: not-allowed; }
+.reviews-arrow svg { width: 18px; height: 18px; }
+
+.reviews-link {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.95rem;
+}
+.reviews-link a {
+  color: var(--color-navy);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--color-gold);
+  text-underline-offset: 4px;
+}
+.reviews-link a:hover { color: var(--color-gold); }
