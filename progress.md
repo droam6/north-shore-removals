@@ -7,6 +7,52 @@
 
 ## Site state — current
 
+### 2026-04-28 — Round 4A REVERT (rolled back palette swap, back on red)
+
+**Files modified (clean revert of the same 5 files Round 4A touched):**
+- `css/styles.css:3` — comment "Antique Gold #B8924A" → "Red #E63946".
+- `css/styles.css:13–15` — `:root` palette restored: `--color-gold: #E63946`, `--color-gold-dark: #C72D39`, `--color-gold-light: #FF5A67`.
+- `landing/removals.html` — 12 hex literals reverted: `#B8924A` → `#E63946` (single replace_all).
+- `progress.md` — this entry.
+- `decisions.md` — D46 added below D45.
+- `CLAUDE.md` — design-system Accent line restored to its pre-4A wording; Next ID bumped.
+
+**Verification greps after revert:**
+- `#B8924A` / `#D4B274` / `#8A6A2F` across non-doc files: **0 matches**.
+- `#E63946` count in `landing/removals.html`: **12** (matches the original count).
+- `:root` shows the three original red values.
+
+**Reason for revert:**
+- Round 4A's audit (D45 contrast table) showed antique gold dropped contrast meaningfully on cream and white surfaces — eyebrow `.section-label` 2.77:1, review stars on white 2.90:1, `landing/removals.html` `.btn-submit` white-on-gold 2.90:1, all failing WCAG AA. Red `#E63946` had its own contrast quirks (eyebrow on cream was 3.99:1, also below 4.5:1 strict AA) but performed better on the most-trafficked surfaces, particularly the conversion-critical landing-page button.
+- Decision: stay on red for now. Future palette change will need either a brighter gold tuned for light surfaces, a dual-variable system (gold + gold-dark with surface-aware usage), or a full grey + gold redesign. D45 is preserved in the decision log so a future round inherits the contrast analysis.
+
+**Not committed yet** — awaiting local preview.
+
+---
+
+### 2026-04-28 — Round 4A palette swap (red → antique gold)
+
+**Files modified:**
+- `css/styles.css` —
+  - Line 3 design-system comment: `Red #E63946` → `Antique Gold #B8924A` for accuracy.
+  - `:root` block: `--color-gold: #E63946` → `#B8924A`, `--color-gold-dark: #C72D39` → `#8A6A2F`, `--color-gold-light: #FF5A67` → `#D4B274`. Variable names unchanged — every `var(--color-gold[-light|-dark])` reference across the stylesheet picks up the new value automatically.
+- `landing/removals.html` — 12 hardcoded `#E63946` → `#B8924A` (this file does not link `styles.css`, so literal hex required). Locations: lines 44 (top-bar bg), 53 (h1 span color), 59 (trust-badge icon), 64 (benefits-list icon), 68 (rating stars), 73 (testimonial border), 75 (testimonial cite color), 88 (form focus border), 92 (btn-submit bg), 97 (form-call hover), 98 (form-call icon), 288 (inline phone-link style).
+
+**Variants chosen:**
+- `--color-gold: #B8924A` — antique gold, mid-warm, slightly desaturated. ~57% lightness in HSL.
+- `--color-gold-light: #D4B274` — base + ~15% L. ~71% L.
+- `--color-gold-dark: #8A6A2F` — base − ~15% L. ~36% L.
+
+**No other variables touched** — navy / cream / warm-white / muted / error / success unchanged per brief ("only red/gold-stored-as-red gets replaced").
+
+**Pre-existing bug noted (out of scope):** `css/styles.css:1933` references `var(--color-gold-hover)` which is not defined anywhere in `:root`. The property silently no-ops. Flagged for a future cleanup pass.
+
+**Stale asset noted:** `css/styles.min.css` exists but is not referenced by any HTML page. Contains no red hex values. Safe to ignore for this round; could be deleted in a future cleanup.
+
+**Not committed yet** — awaiting local preview.
+
+---
+
 ### 2026-04-28 — Round 3.6.3 review cards visibility boost
 
 **Files modified:**

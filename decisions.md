@@ -441,3 +441,98 @@ The user can decide later whether to migrate any of these to inline SVG. None we
 - Pure white can read sterile on monitors with a strong warm calibration. The cream section background carries enough warmth that the contrast still feels intentional, not clinical, but flag this for preview.
 - The hover state is keyboard-focusable too via `:focus-within`-style behaviour? No — only `:hover` is wired. If keyboard users tabbing through the cards should also see the lift, add `.review-card:focus-within { ... }` mirroring the hover. Not added preemptively because the cards don't have focusable interactive children today (no links inside cards) — the focus would never trigger.
 - Hover translate of 2px combined with `gap: 1.5rem` on `.reviews-scroll` is safe — no overlap with neighbouring cards. But if a future round tightens the gap below ~1rem, the hover-lift could clip against neighbours.
+
+---
+
+## D45: Palette swap, phase 1 — red `#E63946` → antique gold `#B8924A`
+
+**Decision:** The brand's primary accent has been swapped from saturated red (`#E63946`) to antique gold (`#B8924A`). The CSS variables retained their existing names (`--color-gold`, `--color-gold-dark`, `--color-gold-light`) — only their values changed. Every UI element that reads through the variables (mega-menu top-accent, eyebrow labels, btn-gold, footer accents, scrollbars, hover states, review-card top-accent, stars, link underlines, etc.) updated automatically. Hardcoded reds in `landing/removals.html` (12 occurrences, the only file that doesn't link `styles.css`) were replaced with the literal new hex.
+
+**What changed in code:**
+- `css/styles.css:3` — design-system comment "Red #E63946" → "Antique Gold #B8924A".
+- `css/styles.css:13–15` — `:root` palette:
+  - `--color-gold: #E63946 → #B8924A`
+  - `--color-gold-dark: #C72D39 → #8A6A2F`
+  - `--color-gold-light: #FF5A67 → #D4B274`
+- `landing/removals.html` — 12 lines × `#E63946 → #B8924A` (single replace_all, since landing page is a self-contained Meta Ads template that doesn't link the shared stylesheet).
+
+**Variant math:**
+- Base `#B8924A`: HSL ~ `(40°, 44%, 51%)` — warm yellow-brown, mid-saturation, mid-lightness.
+- Light `#D4B274`: HSL ~ `(40°, 50%, 64%)` — same hue, +13% L. Used for hover states (`.btn-gold:hover`, `.btn-primary:hover`, `.mobile-cta:hover`, `.btn-submit:hover`, `.service-cta .btn:hover`, mega-menu heading hover).
+- Dark `#8A6A2F`: HSL ~ `(40°, 49%, 36%)` — same hue, −15% L. Reserved for active/pressed states (no current uses in the stylesheet that I found, but the variable is preserved in case a future round wires it up).
+
+**Rationale:**
+- Single source of truth: keeping the variable name `--color-gold` (still misleadingly named — `D??` to rename) means a one-line :root edit propagates to ~30 selectors across the stylesheet without touching any of them. The cost of the misleading name is paid; the benefit of the centralised value is preserved.
+- Antique gold reads more "premium removalist" than saturated brand-red — closer to high-end moving / interiors brand language and less like a sale/CTA flag.
+- Variable names *not* renamed in this round (deliberate). Renaming `--color-gold → --color-accent` (or similar) is a separate refactor — touches ~30 selector occurrences in styles.css plus the 12 landing-page hex replacements would still be out-of-band. Defer to a Round 4B if desired.
+
+**Trade-offs / contrast warnings (Step 3 spot-check):**
+
+The new antique gold `#B8924A` has lower contrast than the old saturated red on most backgrounds. Computed AA pass/fail (against 4.5:1 normal-text threshold):
+
+| Surface | Element | Old red on bg | New gold on bg | AA pass? |
+|---|---|---:|---:|---|
+| Navy `#1A1A2E` | mega-menu accent strip, footer accents, body links on dark sections | ~3.50:1 | **~5.89:1** | ✅ PASSES (better than before) |
+| White `#FFFFFF` | review-card top-accent stripe, white-on-gold button text | ~4.17:1 | **~2.90:1** | ❌ FAILS for text |
+| Cream `#FAFAF8` | `.section-label` eyebrow ("WHAT CUSTOMERS SAY"), gold-on-cream icons | ~3.99:1 | **~2.77:1** | ❌ FAILS — was already borderline |
+| Gold `#B8924A` (white text on it) | `landing/removals.html` `.btn-submit` (white text on gold bg) | ~4.17:1 | **~2.90:1** | ❌ FAILS |
+| Gold `#B8924A` (navy text on it) | `.btn-gold` (navy text on gold bg) | ~5.62:1 | **~5.89:1** | ✅ PASSES |
+
+**Specific elements flagged for review during preview:**
+
+- **Eyebrow text "WHAT CUSTOMERS SAY" / similar `.section-label`** on cream — drops from 3.99:1 (already below AA) to 2.77:1. Failing; visually quieter. Mitigation if needed: switch eyebrow to navy text (different visual language) or to a deeper gold tone scoped to just this label.
+- **Review card top-accent strip** (4px gold) on white card — was a vibrant red anchor; now a muted gold stripe. The top-accent's *job* is visual anchoring of the card, not text legibility, so contrast metric is less critical. But the perceptual "pop" is meaningfully reduced. Mitigation if needed: keep gold but bump the stripe to 5–6px, or use `--color-gold-dark` for the stripe specifically.
+- **`landing/removals.html` `.btn-submit`** — white text on gold bg fails 4.5:1 AA. The conversion-critical button on the Meta Ads landing page now has lower text contrast than ideal. Was already borderline at 4.17:1; now ~2.90:1. **Conversion risk** — recommend changing the button text to navy (`color: var(--color-navy)`) or a deep brown to match the gold palette.
+- **`.btn-gold` (homepage CTA "Get a Quote")** — text is navy, not white, so passes AA at 5.89:1. ✓
+- **Stars on review cards** — gold stars on white card now ~2.90:1. Decorative, but communicates rating; previously red at 4.17:1. Worth eye-balling.
+
+**Trade-offs not addressed in this round (per brief: "do NOT add fixes — just flag them"):**
+- The `landing/removals.html` button is the most consequential failure. If the new gold ships, the landing page button text must be re-styled (navy text, or darker bg variant).
+- Eyebrow label legibility is a recurring concern — appears on every page on cream sections.
+- WCAG AA non-conformance on the public site has accessibility-litigation implications in some jurisdictions; flag for a Round 4B accessibility pass once the visual direction is locked.
+
+**Other items NOT touched per scope:**
+- `--color-error: #dc3545` (form-state red) — left untouched. Functionally an error indicator, not brand accent.
+- `--color-success: #28a745` — left untouched.
+- `css/styles.css:1933` references `var(--color-gold-hover)` (undefined). Pre-existing bug, no relation to this swap; flagged for future cleanup.
+- `css/styles.min.css` — orphan minified file, not referenced by any HTML. Contains no red hex. Left alone.
+
+---
+
+## D46: Round 4A reverted — antique gold rolled back, accent stays red
+
+**Decision:** Round 4A (D45) swapped `--color-gold` from saturated red `#E63946` to antique gold `#B8924A`. The same round's spot-check surfaced material WCAG AA contrast failures on light surfaces — the most consequential being the conversion-critical landing-page button. The decision is to revert to the original red palette and defer any palette change until a more comprehensive solution is designed. D45 is preserved in this log; this entry records the rollback so the audit trail reads "tried antique gold → measured contrast fails → reverted".
+
+**What changed in code:**
+- `css/styles.css:3` — design-system comment "Antique Gold #B8924A" → "Red #E63946".
+- `css/styles.css:13–15` — `:root` restored to the originals: `--color-gold: #E63946`, `--color-gold-dark: #C72D39`, `--color-gold-light: #FF5A67`.
+- `landing/removals.html` — 12 hex literals reverted: `#B8924A` → `#E63946` (single replace_all on the 12 lines D45 had touched).
+- `CLAUDE.md` — design-system "Accent" line restored to the pre-4A wording.
+
+**Verification:** repo grep for `#B8924A` / `#D4B274` / `#8A6A2F` across HTML/CSS (excluding docs and `round*.txt` briefs) returns 0 matches. Landing-page `#E63946` count is 12, matching the pre-4A baseline. `:root` shows the three original red values.
+
+**Why we reverted (the contrast numbers from D45's spot-check):**
+
+| Surface | Element | Old red | New gold | AA |
+|---|---|---:|---:|---|
+| Cream `#FAFAF8` | `.section-label` eyebrow on every page | ~3.99:1 | **~2.77:1** | both fail strict 4.5:1, but old was closer to AA Large (3:1) |
+| White card | review-card top accent strip + stars | ~4.17:1 | **~2.90:1** | failed AA after swap; was passing AA Large before |
+| Gold/Red bg + white text | `landing/removals.html` `.btn-submit` (Meta Ads conversion button) | ~4.17:1 | **~2.90:1** | dropped below AA Large; conversion risk |
+| Navy `#1A1A2E` | mega-menu accents, footer accents, dark-section links | ~3.50:1 | ~5.89:1 (new gold improved) | new gold was *better* on dark, only |
+
+The new gold improved one surface (navy backgrounds) and degraded several more visible surfaces (cream and white). On a site whose primary content sits on cream and whose conversion path includes a landing-page button at 2.90:1 white-on-gold, the swap was a net regression for accessibility and conversion.
+
+**Rationale (why revert vs patch):**
+- Patching the failures one-by-one (e.g. swap landing button text to navy, bump eyebrow to a darker gold variant only on light surfaces) would have been a multi-touchpoint round that grew the scope. The revert is a 4-edit operation that returns to a known baseline.
+- Keeping D45 in the log preserves the contrast analysis. A future palette pass can inherit the numbers rather than re-deriving them.
+- Decision-log discipline: D45 isn't deleted; D46 records the rollback. Future readers see the full reasoning chain (tried antique gold → contrast measurement → rejected) rather than a silent reversal.
+
+**For a future Round 4B / palette redesign, the options surface area is:**
+1. **Brighter gold tuned for light surfaces** (e.g. `#A57729` or deeper, with explicit AA verification on cream + white before commit).
+2. **Dual-variable system**: `--color-accent` for dark-surface contexts (could be brighter gold), `--color-accent-on-light` for cream/white contexts (could be deeper gold or navy). Requires auditing every existing `var(--color-gold)` reference and tagging it with the appropriate variable.
+3. **Full grey + gold redesign**: drop the saturated red entirely, lean into navy + warm-grey + gold with all colour decisions reframed for premium-removalist brand language. Largest scope; biggest pay-off if done well.
+4. **Stay on red permanently and rename the variable** `--color-gold → --color-red` so the misleading name stops being a footgun. Lowest scope; resolves the naming issue D45 sidestepped.
+
+**Trade-offs:**
+- Site is back to the same accessibility profile it had before this round — eyebrow on cream is still 3.99:1 (below 4.5:1 AA). This is a pre-existing concern that was never fixed; the revert doesn't make it worse but also doesn't address it.
+- The 4A → 4A-revert cycle in a single session is recorded in two `progress.md` entries — a nuisance for future readers, but the decision-trail clarity is worth it.
