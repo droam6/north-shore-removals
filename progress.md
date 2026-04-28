@@ -6,6 +6,61 @@
 ---
 
 ## Site state — current
+
+### 2026-04-28 — Round 3.6.3 review cards visibility boost
+
+**Files modified:**
+- `css/styles.css` (Round 3.6.2 block, in place — not a new appended block) —
+  - `.review-card` `background: #FCFAF7` → `#FFFFFF` (pure white, increases card-vs-section contrast from ~1.5% to ~2.5% lightness gap).
+  - `.review-card` `border: 1px solid rgba(193,154,107,0.2)` → `0.45` alpha (gold-tint border now reads clearly without becoming harsh).
+  - `.review-card` `box-shadow: 0 4px 20px rgba(26,26,46,0.08)` → `0 8px 32px rgba(26,26,46,0.16)` (doubled offset, 60% larger blur, 2× alpha — meaningfully stronger lift).
+  - `.review-card` added `transition: transform 0.2s ease, box-shadow 0.2s ease;` on the base rule so unhover animates back smoothly.
+  - `.review-card:hover` rule added: `transform: translateY(-2px); box-shadow: 0 12px 40px rgba(26,26,46,0.20);` — subtle lift on hover for desktop interactivity.
+- Top-accent rule (`border-top: 4px solid var(--color-gold)`) confirmed unchanged. The red strip will read slightly more vibrant against pure white than against the previous warm off-white — desired.
+
+**Why edited the existing 3.6.2 block instead of appending a new one:** these are tuning changes to the existing rules, not new properties. Editing keeps the stylesheet readable; a new block would have stacked overrides on top of overrides.
+
+**Not committed yet** — awaiting local preview.
+
+---
+
+### 2026-04-28 — Round 3.6.2 reviews reverted to cream, cards redesigned
+
+**Files modified:**
+- `index.html:586` — class reverted `section section-dark reviews-section` → `section section-light reviews-section`. Heading + subtitle now inherit standard light-section styling (navy heading via inheritance, `var(--color-muted)` subtitle).
+- `css/styles.css` — Round 3.6.1 block at EOF removed entirely (clean removal preferred over scoping-dead per brief). New Round 3.6.2 block appended:
+  - `.reviews-section { background: var(--color-cream); }` — `#FAFAF8`, defensively overrides `.section-light`'s `--color-warm-white` (`#FDFCFA`) so the section is *cooler* than the card and the warm/cool relationship reads as intended.
+  - `.review-card` overrides: `background: #FCFAF7` (warm off-white, slightly warmer than the section), `color: var(--color-navy)`, `border: 1px solid rgba(193,154,107,0.2)` (barely-visible gold-tinted hairline), `border-top: 4px solid var(--color-gold)` (was 3px — thicker accent to anchor the card visually), `box-shadow: 0 4px 20px rgba(26,26,46,0.08)` (replaces the previous black-alpha shadow with a navy-tinted one for warmth).
+  - `.review-text`, `.review-name` → `var(--color-navy)`; `.review-time`, `.review-source` → `rgba(26,26,46,0.5)`; `.review-meta` divider line → `rgba(26,26,46,0.12)` (was cream-alpha).
+  - `.reviews-arrow` → transparent bg + `rgba(26,26,46,0.3)` navy-alpha border + navy icon. Hover stays gold-fill but icon now flips to white (was navy) since the gold red is dark enough that white reads cleaner than navy.
+  - `.reviews-link a` → navy text, `text-decoration: none`, `border-bottom: 1px solid rgba(193,154,107,0.4)` (gold-tint underline as a discrete border so it doesn't underline-collide with descenders). Hover swaps both colour and border-bottom to full gold.
+
+**Page rhythm now:** dark hero → cream "Why" → other cream service sections → cream FAQ → cream reviews → navy CTA banner → navy contact form. The previous "3 navy slab" anti-pattern (reviews + CTA + contact) is gone.
+
+**Used real class names**, not the brief's placeholders: codebase uses `.review-text` / `.review-name` / `.review-time` / `.review-source` (not `.review-body` / `.reviewer-name` / `.review-time-ago`).
+
+**Not committed yet** — awaiting local preview.
+
+---
+
+### 2026-04-28 — Round 3.6.1 reviews-section background flipped to navy
+
+**Files modified:**
+- `index.html` — `<section class="section section-light reviews-section" id="reviews">` → `section section-dark reviews-section`. Picks up `.section-dark { background: var(--color-navy); color: var(--color-cream); }` so the heading inherits cream automatically; subtitle/arrows/link overridden in the appended CSS block. Also bumped maintenance-comment date `2026-04-27` → `2026-04-28`.
+- `css/styles.css` — appended Round 3.6.1 block at the very end: explicit `.reviews-section { background: var(--color-navy); }` (defensive against later refactors), `.section-title` cream override, `.section-subtitle` `rgba(250,250,248,0.7)` override (brighter than the default `.section-dark .section-subtitle` = 0.5 alpha — brief asked for 0.7), `.reviews-arrow` re-styled to transparent bg + `rgba(250,250,248,0.3)` cream-alpha border + cream icon (was navy circle, would have disappeared on the new navy section), arrow hover unchanged (still gold-fill / navy icon), arrow `:disabled` border softened to `rgba(250,250,248,0.15)`, `.reviews-link a` cream (was navy).
+
+**Audit summary (Step 1 of brief):**
+- Section above (FAQ): light/transparent — clean transition into navy.
+- Section below (CTA banner): already navy — two dark sections in a row, but the rhythm "social proof → CTA" reads coherently and the CTA banner has its own 5rem padding to separate.
+- Cards already navy + gold-star + gold border-top — no changes to card styling required.
+- Arrow buttons would have visually disappeared on navy without the override (navy bg + invisible navy-alpha border) — flipped to transparent + cream-alpha border.
+- Star colour, eyebrow `.section-label` (gold), card text — all already designed for navy, untouched.
+
+**Not committed yet** — awaiting local preview.
+
+---
+
+## Site state — current
 - Live at https://northshoreremovals.com via Bluehost Git Version Control.
 - 20 enquiry forms wired to Formspree `mojkgkpn` (index, contact, landing/removals, 17 suburb pages).
 - Shared form logic in `js/form-validation.js` (validation, honeypot, JSON submit).

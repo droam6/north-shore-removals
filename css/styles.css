@@ -3333,3 +3333,50 @@ img.navbar-logo-icon {
   text-underline-offset: 4px;
 }
 .reviews-link a:hover { color: var(--color-gold); }
+
+/* ---------- ROUND 3.6.2: REVIEWS REVERTED TO LIGHT, CARDS REDESIGNED ---------- */
+/* Round 3.6.1 darkened the section to match the cards but produced 3 consecutive
+   dark sections (reviews → CTA banner → contact form). Reverted to cream;
+   cards rebuilt as warm-off-white panels with a barely-visible gold-tinted
+   border, soft lift shadow, and a thicker (4px) gold top-accent so they read
+   as deliberate panels rather than floating dark blocks. */
+.reviews-section { background: var(--color-cream); }
+
+.review-card {
+  background: #FFFFFF;
+  color: var(--color-navy);
+  border: 1px solid rgba(193, 154, 107, 0.45);
+  border-top: 4px solid var(--color-gold);
+  box-shadow: 0 8px 32px rgba(26, 26, 46, 0.16);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.review-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(26, 26, 46, 0.20);
+}
+.review-card .review-text { color: var(--color-navy); }
+.review-card .review-name { color: var(--color-navy); font-weight: 600; }
+.review-card .review-time,
+.review-card .review-source { color: rgba(26, 26, 46, 0.5); }
+.review-card .review-meta { border-top-color: rgba(26, 26, 46, 0.12); }
+
+.reviews-arrow {
+  background: transparent;
+  border: 1px solid rgba(26, 26, 46, 0.3);
+  color: var(--color-navy);
+}
+.reviews-arrow:hover {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: #fff;
+}
+
+.reviews-link a {
+  color: var(--color-navy);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(193, 154, 107, 0.4);
+}
+.reviews-link a:hover {
+  color: var(--color-gold);
+  border-bottom-color: var(--color-gold);
+}

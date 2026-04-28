@@ -363,3 +363,81 @@ The user can decide later whether to migrate any of these to inline SVG. None we
 - The reviews section adds another light-on-the-eye section between FAQ and CTA banner; if homepage scroll length becomes a concern, it could be moved nearer the top of the conversion funnel later. Current placement (just before CTA) is the conversion-optimal spot — high social proof immediately before the action.
 - Card width is fixed at 320px (mobile) / 360px (desktop). On wide desktops only ~3 cards are visible at once. The scroll arrows make the rest discoverable; a horizontal scroll bar is hidden by `scrollbar-width: none` for cleaner UX.
 - The "via Google" attribution is text-only rather than a coloured Google "G" badge — keeps the card monochromatic and honest about source (Birdeye-syndicated Google reviews).
+
+---
+
+## D42: Reviews section background flipped from cream → dark navy to match the cards
+
+**Decision:** The reviews section was rendering as cream (`.section-light`, `var(--color-warm-white)`) with navy review cards floating on top — visually incoherent (bright section / dark card block / bright section). Switched to `.section-dark` (navy) so the section background and the cards share the same colour family. The cards now read as a continuous panel rather than as bright-on-bright with a darker rectangle pasted on. Heading flips to cream, subtitle to `rgba(250,250,248,0.7)`, arrows to transparent + cream-alpha border, "See all reviews" link to cream/gold-on-hover.
+
+**What changed in code:**
+- `index.html:586` — class `section section-light reviews-section` → `section section-dark reviews-section`. `.section-dark` already declares `background: var(--color-navy); color: var(--color-cream);`, so the heading picks up cream by inheritance.
+- `css/styles.css` (new Round 3.6.1 block at EOF) —
+  - `.reviews-section { background: var(--color-navy); }` (defensive; the `.section-dark` class already does this, but stating it on the section selector hardens against later refactors of `.section-dark`).
+  - `.reviews-section .section-subtitle { color: rgba(250,250,248,0.7); }` — overrides the default `.section-dark .section-subtitle` (0.5 alpha) to the slightly brighter 0.7 the brief asked for; subtitle copy is "Real reviews from..." and benefits from being readable, not whispered.
+  - `.reviews-section .reviews-arrow { background: transparent; color: var(--color-cream); border: 1px solid rgba(250,250,248,0.3); }` — was `background: var(--color-navy)` with a near-invisible navy-alpha border, which would have rendered as bare cream icons floating with no clickable affordance against the new navy section bg. Transparent + cream-alpha border preserves the "circular tap target" affordance.
+  - `.reviews-section .reviews-arrow:hover { background: var(--color-gold); color: var(--color-navy); border-color: var(--color-gold); }` — preserves the existing gold-fill hover semantics; only the border-color is added so the gold fill doesn't show a faint cream rim during hover.
+  - `.reviews-section .reviews-arrow:disabled { opacity: 0.25; border-color: rgba(250,250,248,0.15); }` — was just opacity 0.3; on dark bg, dropping to 0.25 + softer border keeps disabled state legible-but-clearly-disabled.
+  - `.reviews-section .reviews-link a { color: var(--color-cream); }` and hover `var(--color-gold)` — was navy text, would have vanished. Underline (gold) was already gold so it stays.
+
+**Rationale:**
+- Visual coherence: the brand uses navy + gold + cream as its dark palette, and cream + navy text as its light palette. A navy card floating on cream-warm-white was a tonal mismatch — the card's own border-top gold accent was doing the work of separating it from a bg that would have looked better matching the card itself.
+- Page rhythm: pre-flip rhythm went FAQ (light) → reviews (light cream with navy cards) → CTA banner (navy). Flipping reviews to navy makes the rhythm FAQ (light) → reviews (navy) → CTA (navy). The two-dark-in-a-row at the bottom is *intentional* — social proof transitions directly into the conversion CTA without a bright interruption between them, which is a stronger conversion pattern.
+- Used `.section-dark` (existing class) rather than inventing new infrastructure — leverages the existing `.section-dark .section-subtitle` rule and the global `.section-dark` background/color contract so future palette changes track automatically.
+
+**Trade-offs:**
+- The reviews section and CTA banner are now both navy with no clear divider between them. The CTA banner has 5rem of its own padding and starts with its own eyebrow ("Ready to Move?") + heading + new prose, so the eye registers a new block. If during preview the boundary feels too soft, options are: (a) thin gold rule between sections, (b) adjust CTA banner padding, or (c) add subtle bg shade difference (e.g. CTA banner darker `#15151F`). Not implemented preemptively per "don't add features beyond the task" — flag for review during preview.
+- The 0.7-alpha subtitle is brighter than the default `.section-dark .section-subtitle` (0.5). Means the subtitle reads more loudly here than on, e.g., other dark sections. Acceptable because the brief specified 0.7, and the subtitle copy ("verified via Birdeye") is a trust signal that benefits from being readable rather than whispered.
+- Arrow buttons on navy with transparent bg + cream-alpha border are a tonal step quieter than the bold navy-circle-on-cream they replaced. Hover state remains bold (gold fill) so discoverability via hover is preserved. On touch devices the button shape is still clearly outlined. A11y check during preview recommended.
+
+---
+
+## D43: Reviews section reverted to cream; cards rebuilt with warm-off-white panel + soft lift
+
+**Decision:** Round 3.6.1's flip to dark navy was technically clean but produced an unintended page-rhythm problem: reviews + CTA banner + contact form all became navy, creating a long navy slab at the bottom of the homepage. Reverted the reviews section to cream/light; rebuilt the cards as warm-off-white panels with a gold-tinted hairline border, a soft navy-shadow lift, and a thicker (4px) gold top-accent. The section now reads as cohesive cream-on-cream with deliberate panels, while the CTA banner remains the first navy section the eye meets after the FAQ.
+
+**What changed in code:**
+- `index.html:586` — class flipped `section section-dark reviews-section` → `section section-light reviews-section`. Heading + subtitle inherit standard light-section treatment (navy heading via inheritance, `--color-muted` subtitle).
+- `css/styles.css` — Round 3.6.1 block at EOF **fully removed** (clean removal in the same session, no risk to scope-dead). New Round 3.6.2 block appended:
+  - `.reviews-section { background: var(--color-cream); }` — `#FAFAF8`. Defensively overrides `.section-light`'s `--color-warm-white` (`#FDFCFA`) because the brief required the section to be *cooler* than the card so the card's `#FCFAF7` warmth reads as a deliberate separation rather than the inverse. Without this override the section would be *warmer* than the card.
+  - `.review-card` rebuilt: `background: #FCFAF7`, `color: var(--color-navy)`, `border: 1px solid rgba(193,154,107,0.2)` (gold-tint at 20%, just visible), `border-top: 4px solid var(--color-gold)` (was 3px — bumped per brief to anchor each card), `box-shadow: 0 4px 20px rgba(26,26,46,0.08)` (replaces the existing 6px black-alpha shadow with a tighter navy-tinted lift).
+  - Card text rules: `.review-text` and `.review-name` → `var(--color-navy)`; `.review-time`, `.review-source` → `rgba(26,26,46,0.5)`; `.review-meta` divider → `rgba(26,26,46,0.12)` (the existing rule used a cream-alpha border-top that would have been near-invisible on the new light card).
+  - `.reviews-arrow` → transparent + `rgba(26,26,46,0.3)` border + navy icon. Hover keeps the gold fill but the icon flips to **white** rather than navy — deliberate: `--color-gold` is `#E63946` (saturated red) and dark enough that white passes contrast more comfortably than navy on it.
+  - `.reviews-link a` → navy with `text-decoration: none` + `border-bottom: 1px solid rgba(193,154,107,0.4)` (gold-tint hairline as the underline, kept on a separate property so it doesn't collide with descenders the way `text-decoration: underline` does). Hover swaps both colour and border-bottom to full gold.
+
+**Class-name correction vs brief:** The brief's example used `.review-body`, `.reviewer-name`, `.review-time-ago` — the codebase uses `.review-text`, `.review-name`, `.review-time`, `.review-source`. Used the real classes.
+
+**Rationale:**
+- 3.6.1 fixed visual coherence at the cost of page rhythm. The page rhythm fix matters more — long monochrome slabs flatten conversion focus, and the CTA banner is meant to be the *first* navy "moment" after the cream content above.
+- Warm-off-white cards on cream-cream section is a subtler contrast than card-on-dark-section, which is mitigated by three reinforcing details: the 4px gold top-accent strip, the gold-tinted hairline border, and the lift shadow. Each individually is subtle; together they make the cards feel deliberate without screaming.
+
+**Page rhythm now (full homepage):** dark hero → cream service/why/process sections → cream FAQ → cream reviews → navy CTA banner → navy contact form. One navy break (hero), long cream middle, one navy break (CTA), navy form — clean rhythm.
+
+**Trade-offs:**
+- Card contrast against the section is deliberately low. If during preview the cards feel too quiet, options are (a) bump the border-top to 5px or to a higher-saturation gold-light, (b) deepen the lift shadow, or (c) bump the gold-tint border alpha from 0.2 to 0.3. None done preemptively per "don't add features beyond the task".
+- The white icon-on-gold hover state for arrows is brand-consistent (white on red is high-contrast and matches buttons elsewhere) but is one of the few places on the site where pure white appears — keeps it scoped to interactive hover only.
+- D42 (Round 3.6.1) is left in this log even though its decision was reversed — design-decision logs preserve the reasoning chain, including reversed decisions. Future readers see why navy was tried and why cream-with-redesigned-cards was the resolution.
+
+---
+
+## D44: Review cards visibility boosted on cream section (border + shadow + bg + hover)
+
+**Decision:** D43's cards were too subtle — the warm-off-white-on-cream gap (~1.5% lightness) plus the 20%-alpha gold-tint border didn't carry the panel weight on real screens. Three coordinated tunings push the cards from "almost-invisible-but-elegant" to "deliberately panel" without going back to D42's dark-card variant: cool the card to pure white, more than double the border alpha, and meaningfully strengthen the lift shadow. Plus a small hover translate to make the carousel feel interactive on desktop.
+
+**What changed in code (all in the Round 3.6.2 block at css/styles.css EOF, edited in place):**
+- `.review-card` `background`: `#FCFAF7` → `#FFFFFF`. Pure white card on `#FAFAF8` cream section. Card-vs-section lightness gap goes ~1.5% → ~2.5%. Numerically small, perceptually large because the eye reads pure white against any tinted background as "another surface".
+- `.review-card` `border`: `1px solid rgba(193,154,107,0.2)` → `0.45`. More than doubles the alpha so the gold-tint hairline reads clearly without becoming a hard dark line. Stays tonal.
+- `.review-card` `box-shadow`: `0 4px 20px rgba(26,26,46,0.08)` → `0 8px 32px rgba(26,26,46,0.16)`. Doubled offset, 60% larger blur, 2× alpha. The lift now reads as "this card is floating above the section" without becoming the heavy drop-shadow that screams "early-2010s card UI".
+- `.review-card` base rule gained `transition: transform 0.2s ease, box-shadow 0.2s ease;` so the hover animation runs both in and out.
+- `.review-card:hover` (new): `transform: translateY(-2px); box-shadow: 0 12px 40px rgba(26,26,46,0.20);` — a 2px lift plus a deeper shadow. Subtle by design — strong hover effects on a horizontally-scrollable card carousel feel jittery during scroll. Desktop-only via natural CSS media (no `:hover` on touch). The base shadow at rest (`0 8px 32px / 0.16`) sets a baseline; hover steps it up to `0 12px 40px / 0.20`.
+
+**Top-accent unchanged**: `border-top: 4px solid var(--color-gold)`. On the new pure-white card the red reads slightly more vibrant than against the warm off-white it was sitting on. Anchor effect strengthens.
+
+**Rationale:**
+- Edited the existing D43 block in place rather than appending a new D44 override block. These are tuning changes to existing properties (alpha values, hex codes, offset numbers) — re-stating the same selectors with new values is cleaner than stacking overrides in a separate block. The Round 3.6.2 comment block at the top of the rules now describes the *current* state, not the original 3.6.2 state — I let progress.md / decisions.md carry the history.
+- Did NOT increase the top-accent thickness further (still 4px). Pushing it to 5–6px would have been a sledgehammer fix; the brief specifically wanted "boost without going back to dark variant", and the top accent is already doing visible work — doubling the *border* and *shadow* gives more lift than a thicker accent strip would.
+
+**Trade-offs:**
+- Pure white can read sterile on monitors with a strong warm calibration. The cream section background carries enough warmth that the contrast still feels intentional, not clinical, but flag this for preview.
+- The hover state is keyboard-focusable too via `:focus-within`-style behaviour? No — only `:hover` is wired. If keyboard users tabbing through the cards should also see the lift, add `.review-card:focus-within { ... }` mirroring the hover. Not added preemptively because the cards don't have focusable interactive children today (no links inside cards) — the focus would never trigger.
+- Hover translate of 2px combined with `gap: 1.5rem` on `.reviews-scroll` is safe — no overlap with neighbouring cards. But if a future round tightens the gap below ~1rem, the hover-lift could clip against neighbours.

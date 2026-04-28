@@ -101,7 +101,7 @@ All prices + GST. Source of truth: index.html `#pricing` section.
 5. **End every session** by running `git push origin main` so Bluehost's Git Version Control can pull.
 
 ### `decisions.md`
-- **Next ID:** D42
+- **Next ID:** D45
 
 ## Shell / PowerShell note
 This repo is worked on from Windows. When chaining commands in PowerShell, **use semicolons or separate lines, not `&&`** — `&&` is unsupported in Windows PowerShell 5.1 and produces a parser error. Use `git add .; git commit -m "..."; git push` (or run each on its own line).
