@@ -7,6 +7,10 @@
 
 ## Site state — current
 
+### 2026-05-05 — FAQ refresh (5 unified Q&As across all 23 FAQ pages: index, contact, 17 suburbs, 4 move-types). No FAQPage JSON-LD existed, so no schema update needed. Section structure, accordion JS, AOS delays preserved; uses curly apostrophes and Unicode en-dashes per brief.
+
+---
+
 ### 2026-04-28 — Round 4A REVERT (rolled back palette swap, back on red)
 
 **Files modified (clean revert of the same 5 files Round 4A touched):**
